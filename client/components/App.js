@@ -1,8 +1,10 @@
 import React from "react";
 import AddItem from "./AddItem";
 import List from "./List";
+import { ListContextProvider } from "../context";
 
 const App = () => (
+  <ListContextProvider>
   <div className="container p-5">
     <h1 className="display-3">
       A List<small className="text-muted"> with React Hooks</small>
@@ -12,6 +14,7 @@ const App = () => (
       <List />
     </div>
   </div>
+  // </ListContextProvider>
 );
 
 export default App;

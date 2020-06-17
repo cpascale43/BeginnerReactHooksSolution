@@ -1,58 +1,46 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { addItem } from "../store";
+import React, { useState, useContext } from "react";
+import { ListContext } from "../context";
 
-class AddItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      input: "",
-    };
-    this.handleKey = this.handleKey.bind(this);
-  }
+const AddItem = () => {
+  const [input, setInput] = useState("");
+  const [tasks, setTasks] = useContext(ListContext)
 
-  handleKey(evt) {
-    if (this.state.input === "") return;
+  const handleKey = (evt) => {
+    if (input === "") return;
     if (evt.key === "Enter") {
-      this.props.add(this.state.input);
-      this.setState({ input: "" });
+      setTasks([...tasks, input])
+      setInput("")
     }
-  }
+  };
 
-  render() {
-    return (
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Tasks go here..."
-            aria-label="Your items here"
-            aria-describedby="button-addon2"
-            value={this.state.input}
-            onChange={(evt) => this.setState({ input: evt.target.value })}
-            onKeyDown={this.handleKey}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-primary"
-              type="button"
-              id="button-addon2"
-              onClick={() => {
-                if (this.state.input === "") return;
-                this.props.add(this.state.input);
-                this.setState({ input: "" });
-              }}
-            >
-              Add Task
-            </button>
-          </div>
-        </div>
-    );
-  }
-}
+  return (
+    <div className="input-group mb-3">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Tasks go here..."
+        aria-label="Your items here"
+        aria-describedby="button-addon2"
+        value={input}
+        onChange={(evt) => setInput(evt.target.value)}
+        onKeyDown={handleKey}
+      />
+      <div className="input-group-append">
+        <button
+          className="btn btn-outline-primary"
+          type="button"
+          id="button-addon2"
+          onClick={() => {
+            if (input === "") return;
+            setTasks([...tasks, input])
+            setInput("")
+          }}
+        >
+          Add Task
+        </button>
+      </div>
+    </div>
+  );
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  add: (text) => dispatch(addItem(text)),
-});
-
-export default connect(null, mapDispatchToProps)(AddItem);
+export default AddItem;
